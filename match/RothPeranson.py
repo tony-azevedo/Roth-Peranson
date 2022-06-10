@@ -15,6 +15,7 @@ class Student():
         return self.choices.pop()
 
     def find_next(self):
+        # print(self.name)
         try:
             program = self.find_next_preference()
         except IndexError:
@@ -74,19 +75,21 @@ class MatchController():
 # This class manages the processing of rank order lists for Students and Programs
 # in addition to controlling the match process and returning the final results.
 
-    def __init__(self, program_data, candidate_data, places_data=None):
+    def __init__(self, program_data_df, candidate_data_df, places_data_df=None):
     	# Takes csv data directories
 
-        self.program_data = pd.read_csv(program_data)
-        self.candidate_data = pd.read_csv(candidate_data)
-        if places_data:
-            self.places_data = pd.read_csv(places_data, index_col=0)
+        self.program_data = program_data_df # pd.read_csv(program_data_df)
+        self.candidate_data = candidate_data_df
+        if places_data_df is not None:
+            self.places_data = places_data_df
 
         self.programs = {}
         self.candidates = {}
 
         for c in self.program_data.columns:
-            if places_data:
+            #print(c)
+            if places_data_df is not None:
+                #print(self.places_data)
                 self.programs[c] = Program(c, self.places_data.loc[c].places)
             else:
                 self.programs[c] = Program(c)
